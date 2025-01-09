@@ -36,13 +36,41 @@ dns:
   enhanced-mode: fake-ip
   prefer-h3: true
   nameserver:
+    - h3://223.5.5.5/dns-query
+  fallback:
     - tls://8.8.8.8:853
     - tls://[2001:4860:4860::8888]:853
-  direct-nameserver:
-    - https://223.5.5.5/dns-query#h3=true
-  proxy-server-nameserver:
-    - https://223.5.5.5/dns-query#h3=true
-  respect-rules: true
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+    geosite:
+      - gfw
+    ipcidr:
+      - 0.0.0.0/8
+      - 10.0.0.0/8
+      - 100.64.0.0/10
+      - 127.0.0.0/8
+      - 169.254.0.0/16
+      - 172.16.0.0/12
+      - 192.0.0.0/24
+      - 192.0.2.0/24
+      - 192.88.99.0/24
+      - 192.168.0.0/16
+      - 198.18.0.0/15
+      - 198.51.100.0/24
+      - 203.0.113.0/24
+      - 224.0.0.0/4
+      - 240.0.0.0/4
+      - 255.255.255.255/32
+    domain:
+      - "+.google.com"
+      - "+.facebook.com"
+      - "+.youtube.com"
+      - "+.githubusercontent.com"
+      - "+.googlevideo.com"
+      - "+.msftconnecttest.com"
+      - "+.msftncsi.com"
+  follow-rule: true
   ipv6: true
   fake-ip-filter:
     - +.example
@@ -173,7 +201,7 @@ dns:
     - +.ff14.sdo.com
     - ff.dorado.sdo.com
     - +.mcdn.bilivideo.cn
-    - +.media.dssott.com
+    - +.media.dssott.coms
   nameserver-policy:
     +.cloudflareclient.com: tls://1.1.1.1:853
     +.securelogin.com.cn: system
@@ -202,46 +230,6 @@ proxy-providers:
       enable: true
       url: http://cp.cloudflare.com/generate_204
       interval: 60
-proxies:
-  - name: WARP-Relay
-    type: wireguard
-    private-key: mMVJKCxsIhqe9EDefgRA4kSZO4c22FyxfQHRQf3UMFM=
-    server: engage.cloudflareclient.com
-    port: 2408
-    public-key: bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=
-    allowed-ips:
-      - 0.0.0.0/0
-    ip: 172.16.0.2
-    ipv6: 2606:4700:110:83de:abaa:a638:8d6a:339b
-    udp: true
-    remote-dns-resolve: false
-    dialer-proxy: 代理选择
-  - name: WARP-Relay-Manual
-    type: wireguard
-    private-key: mMVJKCxsIhqe9EDefgRA4kSZO4c22FyxfQHRQf3UMFM=
-    server: engage.cloudflareclient.com
-    port: 2408
-    public-key: bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=
-    allowed-ips:
-      - 0.0.0.0/0
-    ip: 172.16.0.2
-    ipv6: 2606:4700:110:83de:abaa:a638:8d6a:339b
-    udp: true
-    remote-dns-resolve: false
-    dialer-proxy: 手动选择
-  - name: WARP-Relay-Direct
-    type: wireguard
-    private-key: mMVJKCxsIhqe9EDefgRA4kSZO4c22FyxfQHRQf3UMFM=
-    server: engage.cloudflareclient.com
-    port: 2408
-    public-key: bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=
-    allowed-ips:
-      - 0.0.0.0/0
-    ip: 172.16.0.2
-    ipv6: 2606:4700:110:83de:abaa:a638:8d6a:339b
-    udp: true
-    remote-dns-resolve: false
-    dialer-proxy: 直连选择
 proxy-groups:
   - name: 节点选择
     type: select
@@ -270,14 +258,6 @@ proxy-groups:
   - name: 通用手动
     type: select
     proxies:
-      - 手动选择
-      - WARP-Relay-Manual
-  - name: 手动选择
-    type: select
-    include-all-providers: true
-    include-all-proxies: true
-    exclude-filter: ^(?=.*(\b(WARP-Relay)\b)).*$
-    proxies:
       - 🇸🇬 新加坡
       - 🇭🇰 香港
       - 🇹🇼 台湾
@@ -298,6 +278,8 @@ proxy-groups:
       - 🇷🇺 俄罗斯
       - 🇨🇳 中国
       - DIRECT
+    use:
+      - sub
   - name: Google
     type: select
     proxies:
@@ -1049,7 +1031,8 @@ proxy-groups:
       - 通用直连
   - name: 流媒体
     type: select
-    include-all: true
+    use: 
+      - sub
     proxies:
       - 通用代理
       - DIRECT
@@ -1222,144 +1205,425 @@ proxy-groups:
       - 通用直连
   - name: 🇭🇰 香港
     type: select
-    include-all: true
+    use: 
+      - sub
     proxies:
+      - 🇭🇰 香港 故障转移
       - 🇭🇰 香港 自动测速
       - DIRECT
     filter: ^(?=.*((?i)🇭🇰|香港|(\b(HK|Hong Kong)\b))).*$
   - name: 🇹🇼 台湾
     type: select
-    include-all: true
+    use: 
+      - sub
     proxies:
+      - 🇹🇼 台湾 故障转移
       - 🇹🇼 台湾 自动测速
       - DIRECT
     filter: ^(?=.*((?i)🇹🇼|台湾|新竹|高雄|花莲|(\b(TW|Taiwan|Hsinchu|Kaohsiung|Hualien)\b))).*$
   - name: 🇯🇵 日本
     type: select
-    include-all: true
+    use: 
+      - sub
     proxies:
+      - 🇯🇵 日本 故障转移
       - 🇯🇵 日本 自动测速
       - DIRECT
     filter: ^(?=.*((?i)🇯🇵|日本|川日|东京|大阪|泉日|埼玉|(\b(JP|Japan)\b))).*$
   - name: 🇰🇷 韩国
     type: select
-    include-all: true
+    use: 
+      - sub
     proxies:
+      - 🇰🇷 韩国 故障转移
       - 🇰🇷 韩国 自动测速
       - DIRECT
     filter: ^(?=.*((?i)🇰🇷|韩国|韓|首尔|(\b(KR|Korea)\b))).*$
   - name: 🇸🇬 新加坡
     type: select
-    include-all: true
+    use: 
+      - sub
     proxies:
+      - 🇸🇬 新加坡 故障转移
       - 🇸🇬 新加坡 自动测速
       - DIRECT
     filter: ^(?=.*((?i)🇸🇬|新加坡|狮城|(\b(SG|Singapore)\b))).*$
   - name: 🇺🇸 美国
     type: select
-    include-all: true
+    use: 
+      - sub
     proxies:
+      - 🇺🇸 美国 故障转移
       - 🇺🇸 美国 自动测速
       - DIRECT
     filter: ^(?=.*((?i)🇺🇸|美国|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|(\b(US|United
       States)\b))).*$
   - name: 🇬🇧 英国
     type: select
-    include-all: true
+    use: 
+      - sub
     proxies:
+      - 🇬🇧 英国 故障转移
       - 🇬🇧 英国 自动测速
       - DIRECT
     filter: ^(?=.*((?i)🇬🇧|英国|伦敦|(\b(UK|United Kingdom)\b))).*$
   - name: 🇫🇷 法国
     type: select
-    include-all: true
+    use: 
+      - sub
     proxies:
+      - 🇫🇷 法国 故障转移
       - 🇫🇷 法国 自动测速
       - DIRECT
     filter: ^(?=.*((?i)🇫🇷|法国|(\b(FR|France)\b))).*$
   - name: 🇩🇪 德国
     type: select
-    include-all: true
+    use: 
+      - sub
     proxies:
+      - 🇩🇪 德国 故障转移
       - 🇩🇪 德国 自动测速
       - DIRECT
     filter: ^(?=.*((?i)🇩🇪|德国|(\b(DE|Germany)\b))).*$
   - name: 🇧🇷 巴西
     type: select
-    include-all: true
+    use: 
+      - sub
     proxies:
+      - 🇧🇷 巴西 故障转移
       - 🇧🇷 巴西 自动测速
       - DIRECT
     filter: ^(?=.*((?i)🇧🇷|巴西|(\b(BR|Brazil)\b))).*$
   - name: 🇹🇭 泰国
     type: select
-    include-all: true
+    use: 
+      - sub
     proxies:
+      - 🇹🇭 泰国 故障转移
       - 🇹🇭 泰国 自动测速
       - DIRECT
     filter: ^(?=.*((?i)🇹🇭|泰国|曼谷|(\b(TH|Thailand)\b))).*$
   - name: 🇲🇾 马来西亚
     type: select
-    include-all: true
+    use: 
+      - sub
     proxies:
+      - 🇲🇾 马来西亚 故障转移
       - 🇲🇾 马来西亚 自动测速
       - DIRECT
     filter: ^(?=.*((?i)🇲🇾|马来西亚|吉隆坡|(\b(MY|Malaysia)\b))).*$
   - name: 🇻🇳 越南
     type: select
-    include-all: true
+    use: 
+      - sub
     proxies:
+      - 🇻🇳 越南 故障转移
       - 🇻🇳 越南 自动测速
       - DIRECT
     filter: ^(?=.*((?i)🇻🇳|越南|(\b(VN|Vietnam)\b))).*$
   - name: 🇮🇳 印度
     type: select
-    include-all: true
+    use: 
+      - sub
     proxies:
+      - 🇮🇳 印度 故障转移
       - 🇮🇳 印度 自动测速
       - DIRECT
     filter: ^(?=.*((?i)🇮🇳|印度|孟买|印度尼西亚|(\b(IN|India)\b))).*$
   - name: 🇹🇷 土耳其
     type: select
-    include-all: true
+    use: 
+      - sub
     proxies:
+      - 🇹🇷 土耳其 故障转移
       - 🇹🇷 土耳其 自动测速
       - DIRECT
     filter: ^(?=.*((?i)🇹🇷|土耳其|(\b(TR|Turkey)\b))).*$
   - name: 🇦🇷 阿根廷
     type: select
-    include-all: true
+    use: 
+      - sub
     proxies:
+      - 🇦🇷 阿根廷 故障转移
       - 🇦🇷 阿根廷 自动测速
       - DIRECT
     filter: ^(?=.*((?i)🇦🇷|阿根廷|(\b(AR|Argentina)\b))).*$
   - name: 🇵🇭 菲律宾
     type: select
-    include-all: true
+    use: 
+      - sub
     proxies:
+      - 🇵🇭 菲律宾 故障转移
       - 🇵🇭 菲律宾 自动测速
       - DIRECT
     filter: ^(?=.*((?i)🇵🇭|菲律宾|(\b(PH|Philippines)\b))).*$
   - name: 🇷🇺 俄罗斯
     type: select
-    include-all: true
+    use: 
+      - sub
     proxies:
+      - 🇷🇺 俄罗斯 故障转移
       - 🇷🇺 俄罗斯 自动测速
       - DIRECT
     filter: ^(?=.*((?i)🇷🇺|俄罗斯|莫斯科|俄|(\b(RU|Russia)\b))).*$
   - name: 🇲🇴 澳门
     type: select
-    include-all: true
+    use: 
+      - sub
     proxies:
+      - 🇲🇴 澳门 故障转移
       - 🇲🇴 澳门 自动测速
       - DIRECT
     filter: ^(?=.*((?i)🇲🇴|澳门|(\b(MO|Macau)\b))).*$
   - name: 🇨🇳 中国
     type: select
-    include-all: true
+    use: 
+      - sub
     proxies:
+      - 🇨🇳 中国 故障转移
       - 🇨🇳 中国 自动测速
       - DIRECT
+    filter: ^(?=.*((?i)🇨🇳|中国|回国|中国[^台])).*$
+  - name: 🇭🇰 香港 故障转移
+    type: fallback
+    interval: 300
+    lazy: true
+    url: http://cp.cloudflare.com/generate_204
+    disable-udp: false
+    timeout: 5000
+    max-failed-times: 3
+    hidden: true
+    use: 
+      - sub
+    filter: ^(?=.*((?i)🇭🇰|香港|(\b(HK|Hong Kong)\b))).*$
+  - name: 🇹🇼 台湾 故障转移
+    type: fallback
+    interval: 300
+    lazy: true
+    url: http://cp.cloudflare.com/generate_204
+    disable-udp: false
+    timeout: 5000
+    max-failed-times: 3
+    hidden: true
+    use: 
+      - sub
+    filter: ^(?=.*((?i)🇹🇼|台湾|新竹|高雄|花莲|(\b(TW|Taiwan|Hsinchu|Kaohsiung|Hualien)\b))).*$
+  - name: 🇯🇵 日本 故障转移
+    type: fallback
+    interval: 300
+    lazy: true
+    url: http://cp.cloudflare.com/generate_204
+    disable-udp: false
+    timeout: 5000
+    max-failed-times: 3
+    hidden: true
+    use: 
+      - sub
+    filter: ^(?=.*((?i)🇯🇵|日本|川日|东京|大阪|泉日|埼玉|(\b(JP|Japan)\b))).*$
+  - name: 🇰🇷 韩国 故障转移
+    type: fallback
+    interval: 300
+    lazy: true
+    url: http://cp.cloudflare.com/generate_204
+    disable-udp: false
+    timeout: 5000
+    max-failed-times: 3
+    hidden: true
+    use: 
+      - sub
+    filter: ^(?=.*((?i)🇰🇷|韩国|韓|首尔|(\b(KR|Korea)\b))).*$
+  - name: 🇸🇬 新加坡 故障转移
+    type: fallback
+    interval: 300
+    lazy: true
+    url: http://cp.cloudflare.com/generate_204
+    disable-udp: false
+    timeout: 5000
+    max-failed-times: 3
+    hidden: true
+    use: 
+      - sub
+    filter: ^(?=.*((?i)🇸🇬|新加坡|狮城|(\b(SG|Singapore)\b))).*$
+  - name: 🇺🇸 美国 故障转移
+    type: fallback
+    interval: 300
+    lazy: true
+    url: http://cp.cloudflare.com/generate_204
+    disable-udp: false
+    timeout: 5000
+    max-failed-times: 3
+    hidden: true
+    use: 
+      - sub
+    filter: ^(?=.*((?i)🇺🇸|美国|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|(\b(US|United
+      States)\b))).*$
+  - name: 🇬🇧 英国 故障转移
+    type: fallback
+    interval: 300
+    lazy: true
+    url: http://cp.cloudflare.com/generate_204
+    disable-udp: false
+    timeout: 5000
+    max-failed-times: 3
+    hidden: true
+    use: 
+      - sub
+    filter: ^(?=.*((?i)🇬🇧|英国|伦敦|(\b(UK|United Kingdom)\b))).*$
+  - name: 🇫🇷 法国 故障转移
+    type: fallback
+    interval: 300
+    lazy: true
+    url: http://cp.cloudflare.com/generate_204
+    disable-udp: false
+    timeout: 5000
+    max-failed-times: 3
+    hidden: true
+    use: 
+      - sub
+    filter: ^(?=.*((?i)🇫🇷|法国|(\b(FR|France)\b))).*$
+  - name: 🇩🇪 德国 故障转移
+    type: fallback
+    interval: 300
+    lazy: true
+    url: http://cp.cloudflare.com/generate_204
+    disable-udp: false
+    timeout: 5000
+    max-failed-times: 3
+    hidden: true
+    use: 
+      - sub
+    filter: ^(?=.*((?i)🇩🇪|德国|(\b(DE|Germany)\b))).*$
+  - name: 🇧🇷 巴西 故障转移
+    type: fallback
+    interval: 300
+    lazy: true
+    url: http://cp.cloudflare.com/generate_204
+    disable-udp: false
+    timeout: 5000
+    max-failed-times: 3
+    hidden: true
+    use: 
+      - sub
+    filter: ^(?=.*((?i)🇧🇷|巴西|(\b(BR|Brazil)\b))).*$
+  - name: 🇹🇭 泰国 故障转移
+    type: fallback
+    interval: 300
+    lazy: true
+    url: http://cp.cloudflare.com/generate_204
+    disable-udp: false
+    timeout: 5000
+    max-failed-times: 3
+    hidden: true
+    use: 
+      - sub
+    filter: ^(?=.*((?i)🇹🇭|泰国|曼谷|(\b(TH|Thailand)\b))).*$
+  - name: 🇲🇾 马来西亚 故障转移
+    type: fallback
+    interval: 300
+    lazy: true
+    url: http://cp.cloudflare.com/generate_204
+    disable-udp: false
+    timeout: 5000
+    max-failed-times: 3
+    hidden: true
+    use: 
+      - sub
+    filter: ^(?=.*((?i)🇲🇾|马来西亚|吉隆坡|(\b(MY|Malaysia)\b))).*$
+  - name: 🇻🇳 越南 故障转移
+    type: fallback
+    interval: 300
+    lazy: true
+    url: http://cp.cloudflare.com/generate_204
+    disable-udp: false
+    timeout: 5000
+    max-failed-times: 3
+    hidden: true
+    use: 
+      - sub
+    filter: ^(?=.*((?i)🇻🇳|越南|(\b(VN|Vietnam)\b))).*$
+  - name: 🇮🇳 印度 故障转移
+    type: fallback
+    interval: 300
+    lazy: true
+    url: http://cp.cloudflare.com/generate_204
+    disable-udp: false
+    timeout: 5000
+    max-failed-times: 3
+    hidden: true
+    use: 
+      - sub
+    filter: ^(?=.*((?i)🇮🇳|印度|孟买|印度尼西亚|(\b(IN|India)\b))).*$
+  - name: 🇹🇷 土耳其 故障转移
+    type: fallback
+    interval: 300
+    lazy: true
+    url: http://cp.cloudflare.com/generate_204
+    disable-udp: false
+    timeout: 5000
+    max-failed-times: 3
+    hidden: true
+    use: 
+      - sub
+    filter: ^(?=.*((?i)🇹🇷|土耳其|(\b(TR|Turkey)\b))).*$
+  - name: 🇦🇷 阿根廷 故障转移
+    type: fallback
+    interval: 300
+    lazy: true
+    url: http://cp.cloudflare.com/generate_204
+    disable-udp: false
+    timeout: 5000
+    max-failed-times: 3
+    hidden: true
+    use: 
+      - sub
+    filter: ^(?=.*((?i)🇦🇷|阿根廷|(\b(AR|Argentina)\b))).*$
+  - name: 🇵🇭 菲律宾 故障转移
+    type: fallback
+    interval: 300
+    lazy: true
+    url: http://cp.cloudflare.com/generate_204
+    disable-udp: false
+    timeout: 5000
+    max-failed-times: 3
+    hidden: true
+    use: 
+      - sub
+    filter: ^(?=.*((?i)🇵🇭|菲律宾|(\b(PH|Philippines)\b))).*$
+  - name: 🇷🇺 俄罗斯 故障转移
+    type: fallback
+    interval: 300
+    lazy: true
+    url: http://cp.cloudflare.com/generate_204
+    disable-udp: false
+    timeout: 5000
+    max-failed-times: 3
+    hidden: true
+    use: 
+      - sub
+    filter: ^(?=.*((?i)🇷🇺|俄罗斯|莫斯科|俄|(\b(RU|Russia)\b))).*$
+  - name: 🇲🇴 澳门 故障转移
+    type: fallback
+    interval: 300
+    lazy: true
+    url: http://cp.cloudflare.com/generate_204
+    disable-udp: false
+    timeout: 5000
+    max-failed-times: 3
+    hidden: true
+    use: 
+      - sub
+    filter: ^(?=.*((?i)🇲🇴|澳门|(\b(MO|Macau)\b))).*$
+  - name: 🇨🇳 中国 故障转移
+    type: fallback
+    interval: 300
+    lazy: true
+    url: http://connect.rom.miui.com/generate_204
+    disable-udp: false
+    timeout: 5000
+    max-failed-times: 3
+    hidden: true
+    use: 
+      - sub
     filter: ^(?=.*((?i)🇨🇳|中国|回国|中国[^台])).*$
   - name: 🇭🇰 香港 自动测速
     type: url-test
@@ -1370,7 +1634,8 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 3
     hidden: true
-    include-all: true
+    use: 
+      - sub
     filter: ^(?=.*((?i)🇭🇰|香港|(\b(HK|Hong Kong)\b))).*$
   - name: 🇹🇼 台湾 自动测速
     type: url-test
@@ -1381,7 +1646,8 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 3
     hidden: true
-    include-all: true
+    use: 
+      - sub
     filter: ^(?=.*((?i)🇹🇼|台湾|新竹|高雄|花莲|(\b(TW|Taiwan|Hsinchu|Kaohsiung|Hualien)\b))).*$
   - name: 🇯🇵 日本 自动测速
     type: url-test
@@ -1392,7 +1658,8 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 3
     hidden: true
-    include-all: true
+    use: 
+      - sub
     filter: ^(?=.*((?i)🇯🇵|日本|川日|东京|大阪|泉日|埼玉|(\b(JP|Japan)\b))).*$
   - name: 🇰🇷 韩国 自动测速
     type: url-test
@@ -1403,7 +1670,8 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 3
     hidden: true
-    include-all: true
+    use: 
+      - sub
     filter: ^(?=.*((?i)🇰🇷|韩国|韓|首尔|(\b(KR|Korea)\b))).*$
   - name: 🇸🇬 新加坡 自动测速
     type: url-test
@@ -1414,7 +1682,8 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 3
     hidden: true
-    include-all: true
+    use: 
+      - sub
     filter: ^(?=.*((?i)🇸🇬|新加坡|狮城|(\b(SG|Singapore)\b))).*$
   - name: 🇺🇸 美国 自动测速
     type: url-test
@@ -1425,7 +1694,8 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 3
     hidden: true
-    include-all: true
+    use: 
+      - sub
     filter: ^(?=.*((?i)🇺🇸|美国|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|(\b(US|United
       States)\b))).*$
   - name: 🇬🇧 英国 自动测速
@@ -1437,7 +1707,8 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 3
     hidden: true
-    include-all: true
+    use: 
+      - sub
     filter: ^(?=.*((?i)🇬🇧|英国|伦敦|(\b(UK|United Kingdom)\b))).*$
   - name: 🇫🇷 法国 自动测速
     type: url-test
@@ -1448,7 +1719,8 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 3
     hidden: true
-    include-all: true
+    use: 
+      - sub
     filter: ^(?=.*((?i)🇫🇷|法国|(\b(FR|France)\b))).*$
   - name: 🇩🇪 德国 自动测速
     type: url-test
@@ -1459,7 +1731,8 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 3
     hidden: true
-    include-all: true
+    use: 
+      - sub
     filter: ^(?=.*((?i)🇩🇪|德国|(\b(DE|Germany)\b))).*$
   - name: 🇧🇷 巴西 自动测速
     type: url-test
@@ -1470,7 +1743,8 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 3
     hidden: true
-    include-all: true
+    use: 
+      - sub
     filter: ^(?=.*((?i)🇧🇷|巴西|(\b(BR|Brazil)\b))).*$
   - name: 🇹🇭 泰国 自动测速
     type: url-test
@@ -1481,7 +1755,8 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 3
     hidden: true
-    include-all: true
+    use: 
+      - sub
     filter: ^(?=.*((?i)🇹🇭|泰国|曼谷|(\b(TH|Thailand)\b))).*$
   - name: 🇲🇾 马来西亚 自动测速
     type: url-test
@@ -1492,7 +1767,8 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 3
     hidden: true
-    include-all: true
+    use: 
+      - sub
     filter: ^(?=.*((?i)🇲🇾|马来西亚|吉隆坡|(\b(MY|Malaysia)\b))).*$
   - name: 🇻🇳 越南 自动测速
     type: url-test
@@ -1503,7 +1779,8 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 3
     hidden: true
-    include-all: true
+    use: 
+      - sub
     filter: ^(?=.*((?i)🇻🇳|越南|(\b(VN|Vietnam)\b))).*$
   - name: 🇮🇳 印度 自动测速
     type: url-test
@@ -1514,7 +1791,8 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 3
     hidden: true
-    include-all: true
+    use: 
+      - sub
     filter: ^(?=.*((?i)🇮🇳|印度|孟买|印度尼西亚|(\b(IN|India)\b))).*$
   - name: 🇹🇷 土耳其 自动测速
     type: url-test
@@ -1525,7 +1803,8 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 3
     hidden: true
-    include-all: true
+    use: 
+      - sub
     filter: ^(?=.*((?i)🇹🇷|土耳其|(\b(TR|Turkey)\b))).*$
   - name: 🇦🇷 阿根廷 自动测速
     type: url-test
@@ -1536,7 +1815,8 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 3
     hidden: true
-    include-all: true
+    use: 
+      - sub
     filter: ^(?=.*((?i)🇦🇷|阿根廷|(\b(AR|Argentina)\b))).*$
   - name: 🇵🇭 菲律宾 自动测速
     type: url-test
@@ -1547,7 +1827,8 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 3
     hidden: true
-    include-all: true
+    use: 
+      - sub
     filter: ^(?=.*((?i)🇵🇭|菲律宾|(\b(PH|Philippines)\b))).*$
   - name: 🇷🇺 俄罗斯 自动测速
     type: url-test
@@ -1558,7 +1839,8 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 3
     hidden: true
-    include-all: true
+    use: 
+      - sub
     filter: ^(?=.*((?i)🇷🇺|俄罗斯|莫斯科|俄|(\b(RU|Russia)\b))).*$
   - name: 🇲🇴 澳门 自动测速
     type: url-test
@@ -1569,7 +1851,8 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 3
     hidden: true
-    include-all: true
+    use: 
+      - sub
     filter: ^(?=.*((?i)🇲🇴|澳门|(\b(MO|Macau)\b))).*$
   - name: 🇨🇳 中国 自动测速
     type: url-test
@@ -1580,25 +1863,16 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 3
     hidden: true
-    include-all: true
+    use: 
+      - sub
     filter: ^(?=.*((?i)🇨🇳|中国|回国|中国[^台])).*$
   - name: 通用代理
-    type: select
-    proxies:
-      - 代理选择
-      - WARP-Relay
-  - name: 代理选择
     type: select
     proxies:
       - 节点选择
       - 通用手动
       - DIRECT
   - name: 通用直连
-    type: select
-    proxies:
-      - 直连选择
-      - WARP-Relay-Direct
-  - name: 直连选择
     type: select
     proxies:
       - DIRECT
@@ -1915,7 +2189,7 @@ rules:
   - RULE-SET,Steam,Steam,no-resolve
   - RULE-SET,SteamCN,SteamCN,no-resolve
   - RULE-SET,Blizzard,Blizzard,no-resolve
-  - RULE-SET,Blizzard-custom,Blizzard,no-resolve
+  - RULE-SET,Blizzard-custom,Blizzard
   - RULE-SET,Origin,Origin,no-resolve
   - RULE-SET,Ubisoft,Ubisoft,no-resolve
   - RULE-SET,HoYoGames,HoYoGames,no-resolve
