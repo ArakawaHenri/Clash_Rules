@@ -52,9 +52,10 @@ dns:
     - tls://8.8.8.8:853
     - tls://[2001:4860:4860::8888]:853
   direct-nameserver:
-    - https://223.5.5.5/dns-query#h3=true
+    - tls://223.5.5.5:853
   proxy-server-nameserver:
-    - https://223.5.5.5/dns-query#h3=true
+    - tls://208.67.222.222:853
+    - tls://223.5.5.5:853
   respect-rules: true
   ipv6: true
   fake-ip-filter:
@@ -188,7 +189,6 @@ dns:
     - +.mcdn.bilivideo.cn
     - +.media.dssott.com
   nameserver-policy:
-    +.cloudflareclient.com: tls://1.1.1.1:853
     +.securelogin.com.cn: system
     captive.apple.com: system
     hotspot.cslwifi.com: system
@@ -200,8 +200,5 @@ dns:
     "*._msdcs": system
     +.msftncsi.com: system
     "geosite:private": system
-    "geosite:cn": https://223.5.5.5/dns-query#h3=true
-    "国内媒体": https://223.5.5.5/dns-query#h3=true
-    "国内站点": https://223.5.5.5/dns-query#h3=true
-    "哔哩哔哩": https://223.5.5.5/dns-query#h3=true
-    "网易云音乐": https://223.5.5.5/dns-query#h3=true
+    +.cloudflareclient.com: tls://1.1.1.1:853
+    +.ts3.uno: tls://223.5.5.5:853
