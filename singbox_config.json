@@ -138,9 +138,16 @@
           }
         ],
         "server": "dns_direct"
+      },
+      {
+        "query_type": [
+          "A",
+          "AAAA"
+        ],
+        "server": "dns_fakeip"
       }
     ],
-    "final": "dns_fakeip",
+    "final": "dns_proxy",
     "independent_cache": true,
     "fakeip": {
       "enabled": true,
