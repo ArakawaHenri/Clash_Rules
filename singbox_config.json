@@ -1,0 +1,186 @@
+{
+  "log": {
+    "disabled": false,
+    "level": "warn",
+    "timestamp": true
+  },
+  "dns": {
+    "servers": [
+      {
+        "tag": "dns_proxy",
+        "address": "tls://8.8.8.8",
+        "address_resolver": "dns_resolver"
+      },
+      {
+        "tag": "dns_direct",
+        "address": "tls://223.5.5.5",
+        "address_resolver": "dns_resolver",
+        "detour": "DIRECT"
+      },
+      {
+        "tag": "dns_fakeip",
+        "address": "fakeip"
+      },
+      {
+        "tag": "dns_resolver",
+        "address": "tls://223.5.5.5",
+        "detour": "DIRECT"
+      },
+      {
+        "tag": "dns_local",
+        "address": "local"
+      },
+      {
+        "tag": "block",
+        "address": "rcode://success"
+      }
+    ],
+    "rules": [
+      {
+        "outbound": [
+          "any"
+        ],
+        "server": "dns_resolver"
+      },
+      {
+        "clash_mode": "direct",
+        "server": "dns_local"
+      },
+      {
+        "clash_mode": "global",
+        "server": "dns_proxy"
+      },
+      {
+        "geosite": "private",
+        "server": "dns_local"
+      },
+      {
+        "domain_suffix": [
+          "securelogin.com.cn",
+          "captive.apple.com",
+          "hotspot.cslwifi.com",
+          "injections.adguard.org",
+          "local.adguard.org",
+          "msftncsi.com",
+          "example",
+          "invalid",
+          "localhost",
+          "test",
+          "local",
+          "m2m",
+          "_tcp",
+          "bogon",
+          "_msdcs",
+          "lan",
+          "localdomain",
+          "home.arpa",
+          "10.in-addr.arpa",
+          "16.172.in-addr.arpa",
+          "17.172.in-addr.arpa",
+          "18.172.in-addr.arpa",
+          "19.172.in-addr.arpa",
+          "20.172.in-addr.arpa",
+          "21.172.in-addr.arpa",
+          "22.172.in-addr.arpa",
+          "23.172.in-addr.arpa",
+          "24.172.in-addr.arpa",
+          "25.172.in-addr.arpa",
+          "26.172.in-addr.arpa",
+          "27.172.in-addr.arpa",
+          "28.172.in-addr.arpa",
+          "29.172.in-addr.arpa",
+          "30.172.in-addr.arpa",
+          "31.172.in-addr.arpa",
+          "168.192.in-addr.arpa",
+          "254.169.in-addr.arpa",
+          "msftconnecttest.com",
+          "msftncsi.com",
+          "localhost.ptlogin2.qq.com",
+          "localhost.sec.qq.com",
+          "ipv6.microsoft.com",
+          "heartbeat.belkin.com",
+          "linksys.com",
+          "linksyssmartwifi.com",
+          "router.asus.com",
+          "fcm.googleapis.com",
+          "mtalk.google.com",
+          "push.hicloud.com",
+          "push.dbankcloud.com",
+          "api.xmpush.xiaomi.com",
+          "push.apple.com",
+          "push.oppomobile.com",
+          "api-push.vivo.com.cn",
+          "ts3.uno"
+        ],
+        "server": "dns_local"
+      },
+      {
+        "domain_regex": [
+          "^stun\\..+",
+          "^alt[^\\.]+-mtalk\\.google\\.com$",
+          "^(time|ntp)\\d*\\..+\\.(com|gov|edu\\.cn|apple\\.com|cn|org|ac\\.cn)$",
+          "^.+\\.(time\\.edu\\.cn|ntp\\.org\\.cn)$",
+          ".*\\.pool\\.ntp\\.org$",
+          "^(clock\\.neu\\.edu\\.cn|time1\\.cloud\\.tencent\\.com|time-ios\\.apple\\.com|ntp\\.ntsc\\.ac\\.cn)$"
+        ],
+        "server": "dns_local"
+      },
+      {
+        "type": "logical",
+        "mode": "and",
+        "rules": [
+          {
+            "geosite": "geolocation-!cn",
+            "invert": true
+          },
+          {
+            "geoip": "cn"
+          }
+        ],
+        "server": "dns_direct"
+      }
+    ],
+    "final": "dns_fakeip",
+    "independent_cache": true,
+    "fakeip": {
+      "enabled": true,
+      "inet6_range": "fc00::/18",
+      "inet4_range": "198.18.0.0/15"
+    }
+  },
+  "ntp": {
+    "enabled": true,
+    "server": "time.apple.com",
+    "server_port": 123,
+    "interval": "30m",
+    "detour": "DIRECT"
+  },
+  "inbounds": [
+    {
+      "type": "mixed",
+      "tag": "mixed-in",
+      "listen": "0.0.0.0",
+      "listen_port": 2080
+    },
+    {
+      "type": "tun",
+      "tag": "tun-in",
+      "inet4_address": "172.19.0.1/30",
+      "inet6_address": "fdfe:dcba:9876::1/126",
+      "auto_route": true,
+      "strict_route": true,
+      "stack": "mixed",
+      "sniff": true
+    }
+  ],
+  "experimental": {
+    "cache_file": {
+      "enabled": true,
+      "store_fakeip": true
+    },
+    "clash_api": {
+      "external_controller": "127.0.0.1:9090",
+      "external_ui": "dashboard"
+    }
+  }
+}
