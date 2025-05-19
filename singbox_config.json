@@ -43,11 +43,11 @@
         "server": "dns_resolver"
       },
       {
-        "clash_mode": "direct",
+        "clash_mode": "Direct",
         "server": "dns_local"
       },
       {
-        "clash_mode": "global",
+        "clash_mode": "Global",
         "server": "dns_proxy"
       },
       {
