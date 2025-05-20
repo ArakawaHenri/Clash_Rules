@@ -126,20 +126,6 @@
         "server": "dns_local"
       },
       {
-        "type": "logical",
-        "mode": "and",
-        "rules": [
-          {
-            "geosite": "geolocation-!cn",
-            "invert": true
-          },
-          {
-            "geoip": "cn"
-          }
-        ],
-        "server": "dns_direct"
-      },
-      {
         "query_type": [
           "A",
           "AAAA"
