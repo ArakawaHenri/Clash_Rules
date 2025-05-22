@@ -28,7 +28,7 @@ ipv6: true
 log-level: silent
 
 # Clash 的 RESTful API
-external-controller: '127.0.0.1:9090'
+external-controller: '127.0.0.1:9000'
 
 # 实验性功能
 experimental:
