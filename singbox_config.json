@@ -126,6 +126,10 @@
         "server": "dns_local"
       },
       {
+        "geosite": "geolocation-cn",
+        "server": "dns_direct"
+      },
+      {
         "query_type": [
           "A",
           "AAAA"
