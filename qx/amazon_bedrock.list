@@ -1,0 +1,2 @@
+HOST-WILDCARD,bedrock-runtime.*.amazonaws.com,海外AI
+HOST-WILDCARD,bedrock.*.amazonaws.com,海外AI
