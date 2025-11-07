@@ -917,6 +917,7 @@ proxy-groups:
   - name: Blizzard
     type: select
     proxies:
+      - 通用直连
       - 通用代理
       - 节点备选
       - 🇭🇰 香港
@@ -939,7 +940,6 @@ proxy-groups:
       - 🇷🇺 俄罗斯
       - 🇨🇳 中国
       - 手动选择
-      - 通用直连
   - name: Origin
     type: select
     proxies:
@@ -995,6 +995,7 @@ proxy-groups:
   - name: HoYoGames
     type: select
     proxies:
+      - 通用直连
       - 通用代理
       - 节点备选
       - 🇭🇰 香港
@@ -1017,7 +1018,6 @@ proxy-groups:
       - 🇷🇺 俄罗斯
       - 🇨🇳 中国
       - 手动选择
-      - 通用直连
   - name: 流媒体
     type: select
     include-all: true
@@ -1187,14 +1187,6 @@ proxy-groups:
       - 🇷🇺 俄罗斯
       - 🇨🇳 中国
       - 手动选择
-  - name: DNS查询
-    type: select
-    proxies:
-      - DIRECT
-      - 通用直连
-      - 通用代理
-      - 节点备选
-      - REJECT
   - name: 未归类
     type: select
     proxies:
