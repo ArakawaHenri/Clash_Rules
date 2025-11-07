@@ -1,15 +1,43 @@
-#HSBC
+# HSBC
 HOST-SUFFIX,hsbc.com.hk,香港银行
 
-#BOCHK
+# BOCHK
 HOST-SUFFIX,bochk.com,香港银行
 HOST-SUFFIX,etnet.com.hk,香港银行
 
-#CNCBI
+# CNCBI
 HOST-SUFFIX,cncbinternational.com,香港银行
 
-#AIRSTAR
+# Airstar
 HOST-SUFFIX,airstarbank.com,香港银行
 
-#LIVI
+# Livi
 HOST-SUFFIX,livibank.com,香港银行
+
+# Ant
+HOST-SUFFIX,antbank.hk,香港银行
+
+# CCB (Asia)
+HOST-SUFFIX,asia.ccb.com,香港银行
+
+# CMB Wing Lung
+HOST-SUFFIX,cmbwinglungbank.com,香港银行
+
+# Fusion
+HOST-SUFFIX,fusionbank.com,香港银行
+
+# ICBC (Asia)
+HOST-SUFFIX,icbcasia.com,香港银行
+
+# NCB
+HOST-SUFFIX,ncb.com.hk,香港银行
+
+# PAO
+HOST-SUFFIX,paob.com.hk,香港银行
+
+# WeLab
+HOST-SUFFIX,welab.bank,香港银行
+
+# ZA
+HOST-SUFFIX,cdn.zaticdn.com,香港银行
+HOST-SUFFIX,za.group,香港银行

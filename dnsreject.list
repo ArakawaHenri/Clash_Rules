@@ -1,3 +1,0 @@
-#禁止DNS查询
-DST-PORT,53
-DST-PORT,853

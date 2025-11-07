@@ -1,0 +1,6 @@
+#禁止DNS查询
+DST-PORT,53
+DST-PORT,853
+
+# ABC proxy check
+DOMAIN,msmp.abchina.com.cn
