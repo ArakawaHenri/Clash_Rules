@@ -2054,13 +2054,13 @@ rule-providers:
     behavior: classical
     interval: 86400
     format: text
-    url: https://raw.githubusercontent.com/ArakawaHenri/Clash_Rules/master/clash/Ubisoft.list
+    url: https://raw.githubusercontent.com/ArakawaHenri/Clash_Rules/master/clash/ubisoft.list
   HoYoGames:
     type: http
     behavior: classical
     interval: 86400
     format: text
-    url: https://raw.githubusercontent.com/ArakawaHenri/Clash_Rules/master/clash/HoYoGames.list
+    url: https://raw.githubusercontent.com/ArakawaHenri/Clash_Rules/master/clash/hoyogames.list
   Netflix:
     type: http
     behavior: classical
