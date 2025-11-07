@@ -4,3 +4,18 @@ DST-PORT,853
 
 # ABC proxy check
 DOMAIN,msmp.abchina.com.cn
+
+# bilibili HTTP DNS
+IP-CIDR,203.107.1.0/24
+IP-CIDR,203.119.206.0/24
+
+# bilibili PCDN
+DOMAIN-SUFFIX,ahdohpiechei.com
+DOMAIN-SUFFIX,nexusedgeio.com
+
+# bilibili PCDN 常用端口
+# DST-PORT,4480
+# DST-PORT,4483
+# DST-PORT,8000
+# DST-PORT,8082
+# DST-PORT,9305
