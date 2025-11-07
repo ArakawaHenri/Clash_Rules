@@ -1,15 +1,43 @@
-#HSBC
+# HSBC
 DOMAIN-SUFFIX,hsbc.com.hk
 
-#BOCHK
+# BOCHK
 DOMAIN-SUFFIX,bochk.com
 DOMAIN-SUFFIX,etnet.com.hk
 
-#CNCBI
+# CNCBI
 DOMAIN-SUFFIX,cncbinternational.com
 
-#AIRSTAR
+# Airstar
 DOMAIN-SUFFIX,airstarbank.com
 
-#LIVI
+# Livi
 DOMAIN-SUFFIX,livibank.com
+
+# Ant
+DOMAIN-SUFFIX,antbank.hk
+
+# CCB (Asia)
+DOMAIN-SUFFIX,asia.ccb.com
+
+# CMB Wing Lung
+DOMAIN-SUFFIX,cmbwinglungbank.com
+
+# Fusion
+DOMAIN-SUFFIX,fusionbank.com
+
+# ICBC (Asia)
+DOMAIN-SUFFIX,icbcasia.com
+
+# NCB
+DOMAIN-SUFFIX,ncb.com.hk
+
+# PAO
+DOMAIN-SUFFIX,paob.com.hk
+
+# WeLab
+DOMAIN-SUFFIX,welab.bank
+
+# ZA
+DOMAIN-SUFFIX,cdn.zaticdn.com
+DOMAIN-SUFFIX,za.group
