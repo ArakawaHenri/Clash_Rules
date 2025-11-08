@@ -1904,12 +1904,6 @@ rule-providers:
     interval: 86400
     format: text
     url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/YouTube.list
-  YouTubeMusic:
-    type: http
-    behavior: classical
-    interval: 86400
-    format: text
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/YouTubeMusic.list
   TikTok:
     type: http
     behavior: classical
@@ -2136,11 +2130,10 @@ rules:
   - RULE-SET,下载工具,下载工具,no-resolve
   - RULE-SET,BanAD,广告,no-resolve
   - RULE-SET,BanProgramAD,广告,no-resolve
-  - RULE-SET,Google,Google,no-resolve
   - RULE-SET,FCM,FCM,no-resolve
-  - RULE-SET,Huawei,Huawei,no-resolve
   - RULE-SET,YouTube,YouTube,no-resolve
-  - RULE-SET,YouTubeMusic,YouTube,no-resolve
+  - RULE-SET,Google,Google,no-resolve
+  - RULE-SET,Huawei,Huawei,no-resolve
   - RULE-SET,TikTok,TikTok,no-resolve
   - RULE-SET,Spotify,Spotify,no-resolve
   - RULE-SET,ChatGPT,海外AI,no-resolve
@@ -2158,8 +2151,8 @@ rules:
   - RULE-SET,Epic,Epic,no-resolve
   - RULE-SET,Sony,Sony,no-resolve
   - RULE-SET,SteamCDN,SteamCDN,no-resolve
-  - RULE-SET,Steam,Steam,no-resolve
   - RULE-SET,SteamCN,SteamCN,no-resolve
+  - RULE-SET,Steam,Steam,no-resolve
   - RULE-SET,Blizzard,Blizzard,no-resolve
   - RULE-SET,Blizzard-custom,Blizzard,no-resolve
   - RULE-SET,Origin,Origin,no-resolve
