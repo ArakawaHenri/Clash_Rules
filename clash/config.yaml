@@ -1867,7 +1867,7 @@ rule-providers:
     behavior: classical
     interval: 86400
     format: text
-    url: https://raw.githubusercontent.com/ArakawaHenri/Clash_Rules/master/clash/reject.list
+    url: https://raw.githubusercontent.com/ArakawaHenri/Clash_Rules/master/clash/rules/reject.list
   BanAD:
     type: http
     behavior: classical
@@ -1939,13 +1939,13 @@ rule-providers:
     behavior: classical
     interval: 86400
     format: text
-    url: https://raw.githubusercontent.com/ArakawaHenri/Clash_Rules/master/clash/amazon_bedrock.list
+    url: https://raw.githubusercontent.com/ArakawaHenri/Clash_Rules/master/clash/rules/amazon_bedrock.list
   AppleIntelligence:
     type: http
     behavior: classical
     interval: 86400
     format: text
-    url: https://raw.githubusercontent.com/ArakawaHenri/Clash_Rules/master/clash/apple_intelligence.list
+    url: https://raw.githubusercontent.com/ArakawaHenri/Clash_Rules/master/clash/rules/apple_intelligence.list
   Bing:
     type: http
     behavior: classical
@@ -2035,7 +2035,7 @@ rule-providers:
     behavior: classical
     interval: 86400
     format: text
-    url: https://raw.githubusercontent.com/ArakawaHenri/Clash_Rules/master/clash/blizzard.list
+    url: https://raw.githubusercontent.com/ArakawaHenri/Clash_Rules/master/clash/rules/blizzard.list
   Origin:
     type: http
     behavior: classical
@@ -2047,13 +2047,13 @@ rule-providers:
     behavior: classical
     interval: 86400
     format: text
-    url: https://raw.githubusercontent.com/ArakawaHenri/Clash_Rules/master/clash/ubisoft.list
+    url: https://raw.githubusercontent.com/ArakawaHenri/Clash_Rules/master/clash/rules/ubisoft.list
   HoYoGames:
     type: http
     behavior: classical
     interval: 86400
     format: text
-    url: https://raw.githubusercontent.com/ArakawaHenri/Clash_Rules/master/clash/hoyogames.list
+    url: https://raw.githubusercontent.com/ArakawaHenri/Clash_Rules/master/clash/rules/hoyogames.list
   Netflix:
     type: http
     behavior: classical
@@ -2083,13 +2083,13 @@ rule-providers:
     behavior: classical
     interval: 86400
     format: text
-    url: https://raw.githubusercontent.com/ArakawaHenri/Clash_Rules/master/clash/hkbank.list
+    url: https://raw.githubusercontent.com/ArakawaHenri/Clash_Rules/master/clash/rules/hkbank.list
   英国银行:
     type: http
     behavior: classical
     interval: 86400
     format: text
-    url: https://raw.githubusercontent.com/ArakawaHenri/Clash_Rules/master/clash/ukbank.list
+    url: https://raw.githubusercontent.com/ArakawaHenri/Clash_Rules/master/clash/rules/ukbank.list
   国内媒体:
     type: http
     behavior: classical
