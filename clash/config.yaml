@@ -1839,6 +1839,7 @@ proxy-groups:
     type: select
     proxies:
       - 节点选择
+      - 节点备选
       - 手动选择
       - DIRECT
   - name: 通用直连
@@ -1846,6 +1847,7 @@ proxy-groups:
     proxies:
       - DIRECT
       - 节点选择
+      - 节点备选
       - 手动选择
 rule-providers:
   本地:
