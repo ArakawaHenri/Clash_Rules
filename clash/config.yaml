@@ -1934,6 +1934,12 @@ rule-providers:
     interval: 86400
     format: text
     url: https://raw.githubusercontent.com/ArakawaHenri/Clash_Rules/master/clash/rules/amazon_bedrock.list
+  GoogleGemini:
+    type: http
+    behavior: classical
+    interval: 86400
+    format: text
+    url: https://raw.githubusercontent.com/ArakawaHenri/Clash_Rules/master/clash/rules/google_gemini.list
   AppleIntelligence:
     type: http
     behavior: classical
@@ -2128,6 +2134,11 @@ rules:
   - RULE-SET,拒绝,REJECT,no-resolve
   - RULE-SET,本地,本地,no-resolve
   - RULE-SET,下载工具,下载工具,no-resolve
+  - RULE-SET,ChatGPT,海外AI,no-resolve
+  - RULE-SET,Claude,海外AI,no-resolve
+  - RULE-SET,AmazonBedrock,海外AI,no-resolve
+  - RULE-SET,GoogleGemini,海外AI,no-resolve
+  - RULE-SET,AppleIntelligence,海外AI,no-resolve
   - RULE-SET,BanAD,广告,no-resolve
   - RULE-SET,BanProgramAD,广告,no-resolve
   - RULE-SET,FCM,FCM,no-resolve
@@ -2136,10 +2147,6 @@ rules:
   - RULE-SET,Huawei,Huawei,no-resolve
   - RULE-SET,TikTok,TikTok,no-resolve
   - RULE-SET,Spotify,Spotify,no-resolve
-  - RULE-SET,ChatGPT,海外AI,no-resolve
-  - RULE-SET,Claude,海外AI,no-resolve
-  - RULE-SET,AmazonBedrock,海外AI,no-resolve
-  - RULE-SET,AppleIntelligence,海外AI,no-resolve
   - RULE-SET,Bing,Bing,no-resolve
   - RULE-SET,OneDrive,OneDrive,no-resolve
   - RULE-SET,Xbox,Xbox,no-resolve
